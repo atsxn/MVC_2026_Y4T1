@@ -22,6 +22,12 @@ class ExamScenario(unittest.TestCase):
             self.election.cast_ballot("V04", ["C04", "C05", "C01"])
         self.assertEqual(len(self.election.ballots), 4)
 
+    def test_t2b_incomplete_ranking_is_rejected(self):
+        with self.assertRaises(RuleViolation) as ctx:
+            self.election.cast_ballot("V05", ["C01", "C02"])
+        self.assertIn("exactly 3 candidates", str(ctx.exception))
+        self.assertFalse(self.election.find_voter("V05").has_voted)
+
     def test_t3_duplicate_candidate_is_rejected(self):
         with self.assertRaises(RuleViolation):
             self.election.cast_ballot("V05", ["C04", "C04", "C02"])

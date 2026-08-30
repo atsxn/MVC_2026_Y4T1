@@ -59,14 +59,11 @@ class ConsoleView:
         return input("\nVoter id (e.g. V04, blank to cancel): ").strip().upper()
 
     def ask_ranking(self):
-        """Collect three candidate ids. Whatever is typed goes to the model to be judged."""
-        ranking = []
-        for position in (1, 2, 3):
-            value = input("Rank %d (candidate id): " % position).strip().upper()
-            if not value:
-                return None
-            ranking.append(value)
-        return ranking
+        """Read the ranking as typed. The model decides whether it is a legal ballot."""
+        raw = input("Ranking, candidate ids for rank 1 2 3 (blank to cancel): ").strip()
+        if not raw:
+            return None
+        return [value.upper() for value in raw.split()]
 
     # --- officer side
 
